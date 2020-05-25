@@ -27,17 +27,25 @@ export async function listLogEntries() {
 }
 
 export async function crateLogEntry(entry) {
-  // const apiKey = entry.apiKey;
-  // delete entry.apiKey;
-  console.log(API_URL);
+  const apiKey = entry.apiKey;
+  delete entry.apiKey;
+  console.log(apiKey);
   const response = await fetch(`${API_URL}/api/logs`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      // 'X-API-KEY': apiKey,
+      "X-API-KEY": apiKey,
     },
     body: JSON.stringify(entry),
   });
+  // const json = response.json();
+  // if (response.ok) {
+  //   return json;
+  // }
+  // console.log(json);
+  // const error = new Error(json.message);
+  // error.response = json;
+  // throw error;
   let json;
   if (response.headers.get("content-type").includes("text/html")) {
     const message = await response.text();
@@ -47,6 +55,7 @@ export async function crateLogEntry(entry) {
   } else {
     json = await response.json();
   }
+  console.log(json);
   if (response.ok) {
     return json;
   }

@@ -6,24 +6,12 @@ const LogEntryForm = ({ location, onClose }) => {
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState("");
   const { register, handleSubmit } = useForm();
-  //   const onSubmit = async (data) => {
-  //     try {
-  //       setLoading(true);
-  //       data.latitude = location.latitude;
-  //       data.longitude = location.longitude;
-  //       await createLogEntry(data);
-  //       onClose();
-  //     } catch (error) {
-  //       console.error(error);
-  //       setError(error.message);
-  //       setLoading(false);
-  //     }
-  //   };
   const onSubmit = async (data) => {
     try {
       setloading(true);
       data.latitude = location.latitude;
       data.longitude = location.longitude;
+      console.log(data);
       const created = await crateLogEntry(data);
       console.log(created);
       onClose();
@@ -36,6 +24,8 @@ const LogEntryForm = ({ location, onClose }) => {
   return (
     <form className="entry-form" onSubmit={handleSubmit(onSubmit)}>
       {error ? <h3>{error}</h3> : null}
+      <label htmlFor="apiKey">API KEY</label>
+      <input type="password" name="apiKey" required ref={register} />
       <label htmlFor="title">Title</label>
       <input type="text" name="title" required ref={register} />
       <label htmlFor="comments">Comments</label>
